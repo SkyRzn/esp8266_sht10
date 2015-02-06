@@ -1,7 +1,8 @@
-wifi.setmode(wifi.STATION)
-wifi.sta.config("lolcat", "1234567890")
-wifi.sta.autoconnect(1)
---tmr.alarm(4000, 0, function() dofile("interupt.lua") end)
+require "main"
 
-print("Started")
+wifi.setmode(wifi.STATION)
+wifi.sta.config("lolcat2", "1234567890")
+wifi.sta.connect()
+
+tmr.alarm(0, 1000, 1, run)
 
