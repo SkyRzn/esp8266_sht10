@@ -1,4 +1,4 @@
-require "main"
+require "main2"
 
 wifi.setmode(wifi.STATION)
 wifi.sta.config("lolcat2", "1234567890")

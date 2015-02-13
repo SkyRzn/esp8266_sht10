@@ -11,34 +11,34 @@ local sda = 4
 local scl = 3
 
 -- set SDA LOW
-function dl()
+local function dl()
 	gpio.write(sda, gpio.LOW)
 	gpio.mode(sda, gpio.OUTPUT)
 end
 
 -- set SDA HIGH
-function dh()
+local function dh()
 	gpio.mode(sda, gpio.INPUT)
 	gpio.write(sda, gpio.HIGH)
 end
 
 -- set SCL LOW
-function cl()
+local function cl()
 	gpio.write(scl, gpio.LOW)
 end
 
 -- set SCL HIGH
-function ch()
+local function ch()
 	gpio.write(scl, gpio.HIGH)
 end
 
 -- get SDA value
-function dr()
+local function dr()
 	gpio.mode(sda, gpio.INPUT)
 	return gpio.read(sda)
 end
 
-function wait()
+local function wait()
 	for i = 1, 100 do
 		tmr.delay(10000)
 		if dr() == gpio.LOW then
@@ -48,7 +48,7 @@ function wait()
 	return false
 end
 
-function read_byte()
+local function read_byte()
 	local val = 0
 	for i = 0, 7 do
 		ch()
@@ -58,7 +58,7 @@ function read_byte()
 	return val
 end
 
-function write_byte(val)
+local function write_byte(val)
 	for i = 0, 7 do
 		if bit.band(val, 2 ^ (7-i)) == 0 then
 			dl()
@@ -69,7 +69,7 @@ function write_byte(val)
 	end
 end
 
-function read_cmd(cmd)
+local function read_cmd(cmd)
 	dh() ch() dl() cl() ch() dh() cl() -- transmission start sequence
 
 	write_byte(cmd)
