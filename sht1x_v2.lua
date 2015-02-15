@@ -113,9 +113,15 @@ local function read_cmd(cmd)
 end
 
 local function num_to_str(val, mult)
+	local sign = ""
+	if val < 0 then
+		val = -val
+		sign = "-"
+	end
 	local v1 = val/mult
-	local v2 = val/(mult/100) - v1*100
-	return string.format("%d.%02d", v1, v2)
+	local v2 = val%mult
+	local res = string.format("%d.%04d", v1, v2)
+	return sign..res
 end
 
 -- get temperature in raw format
@@ -129,34 +135,32 @@ local function get_raw_humidity()
 end
 
 -- get temperature in in degrees Celsius
-local function get_temperature_C()
-	local raw_temp = get_raw_temperature()
-	if raw_temp == nil then return nil end
-	temp = raw_temp * D2C + D1C
+local function temperature_C(raw_temp)
+	if raw_temp == nil then return "" end
+	local temp = raw_temp * D2C + D1C
 	return num_to_str(temp, TM)
 end
 
 -- get temperature in in degrees Fahrenheit
-local function get_temperature_F()
-	local raw_temp = get_raw_temperature()
-	if raw_temp == nil then return nil end
-	temp = raw_temp * D2F + D1F
+local function temperature_F(raw_temp)
+	if raw_temp == nil then return "" end
+	local temp = raw_temp * D2F + D1F
 	return num_to_str(temp, TM)
 end
 
 -- get relative humidity in percents
-local function get_humidity()
-	local raw_temp = get_raw_temperature()
+local function get_humidity(raw_temp)
+	if raw_temp == nil then return "" end
 	local raw_hum = get_raw_humidity()
-	temp = raw_temp * D2C + D1C
-	lin_hum = C1 + C2 * raw_hum + C3 * raw_hum * raw_hum / HM
-	hum = (temp - T0) * (T1 + T2 * raw_hum)/TM + lin_hum
+	local temp = raw_temp * D2C + D1C
+	local lin_hum = C1 + C2 * raw_hum + C3 * raw_hum * raw_hum / HM
+	local hum = (temp - T0) * (T1 + T2 * raw_hum)/TM + lin_hum
 	return num_to_str(hum, HM)
 end
 
 init()
-
-local temp = get_temperature_C()
-local hum = get_humidity()
+local raw_temp = get_raw_temperature()
+local temp = temperature_C(raw_temp)
+local hum = get_humidity(raw_temp)
 
 return {temp, hum}
