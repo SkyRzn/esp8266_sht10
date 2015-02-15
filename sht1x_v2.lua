@@ -119,8 +119,8 @@ local function num_to_str(val, mult)
 		sign = "-"
 	end
 	local v1 = val/mult
-	local v2 = val%mult
-	local res = string.format("%d.%04d", v1, v2)
+	local v2 = (val/(mult/1000))%1000
+	local res = string.format("%d.%03d", v1, v2)
 	return sign..res
 end
 
