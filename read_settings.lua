@@ -10,7 +10,9 @@ for val in string.gmatch(str, "%d+") do
 	vals[i] = tonumber(val)
 	i = i + 1
 end
+
 if vals[1] ~= nil then deep_sleep_time = vals[1] end
 if vals[2] ~= nil then max_connection_attempts = vals[2] end
+print("read settings:", deep_sleep_time, max_connection_attempts)
 
 

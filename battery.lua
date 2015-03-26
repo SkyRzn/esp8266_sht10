@@ -3,6 +3,7 @@ gpio.write(5, gpio.HIGH)
 
 gpio.mode(6, gpio.OUTPUT)
 gpio.write(6, gpio.LOW)
+tmr.wdclr()
 tmr.delay(100000)
 gpio.write(5, gpio.LOW)
 gpio.mode(6, gpio.INPUT)
@@ -12,6 +13,7 @@ while (gpio.read(6) == 0) do
 	if cnt > 4000 then
 		break
 	end
+	tmr.wdclr()
 	tmr.delay(1000)
 end
 return cnt
